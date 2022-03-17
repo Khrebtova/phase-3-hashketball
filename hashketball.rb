@@ -1,3 +1,4 @@
+require "pry"
 # Write your code below game_hash
 def game_hash
   {
@@ -127,3 +128,88 @@ def game_hash
 end
 
 # Write code here
+def home_team(game_hash)
+  team = game_hash[:home]
+end 
+
+def away_team(game_hash)
+  team = game_hash[:away]
+end  
+
+def home_team_players(game_hash)
+  players = game_hash[:home][:players]
+end
+
+def away_team_players(game_hash)
+  players = game_hash[:away][:players]
+end
+
+def all_players(game_hash)
+  players = game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+def num_points_scored(name)
+  players = all_players(game_hash) 
+  player_points = players.find {|player| player[:player_name]==name}[:points]
+end
+
+def shoe_size(name)
+  players = all_players(game_hash) 
+  player_points = players.find {|player| player[:player_name]==name}[:shoe]
+end
+
+def team_colors(name)
+  teams = []
+  game_hash.each_value {|team| teams << team}    
+  result = teams.find {|team| team[:team_name] == name}[:colors] 
+end
+
+def team_names
+  names = []
+  game_hash.each_value {|team| names << team[:team_name]}
+  names
+end
+
+
+def player_numbers(team_name)
+  teams = []
+  game_hash.each_value {|team| teams << team}   
+  result_team_players = teams.find {|team| team[:team_name] == team_name}[:players]
+  
+  array_numbers = result_team_players.map { |player| player[:number]}
+end
+
+def player_stats(name)
+  players = all_players(game_hash)
+  result = players.find {|player| player[:player_name] == name}
+  
+end
+
+def big_shoe_rebounds
+  players = all_players(game_hash)
+  result = players.max {|player1, player2| player1[:shoe] <=> player2[:shoe]}[:rebounds]
+end
+
+def most_points_scored
+  players = all_players(game_hash)
+  result = players.max {|player1, player2| player1[:points] <=> player2[:points]}[:player_name]
+end 
+
+def winning_team
+  home_points = home_team_players(game_hash).map {|player| player[:points]}
+  away_points = away_team_players(game_hash).map {|player| player[:points]}
+  home_points.sum > away_points.sum ? "Home Teams wins! with #{home_points.sum} points! Away Team Looses with #{away_points.sum} points" : "Away Team Wins #{away_points.sum} points!"
+end
+
+
+def player_with_longest_name  
+  result = all_players(game_hash).max {|player1, player2| player1[:player_name].length <=> player2[:player_name].length}[:player_name]
+end
+
+def long_name_steals_a_ton
+    longest_name = player_with_longest_name
+    most_steals = all_players(game_hash).max {|player1, player2| player1[:steals] <=> player2[:steals]}[:player_name]
+    longest_name == most_steals
+end
+
+long_name_steals_a_ton
